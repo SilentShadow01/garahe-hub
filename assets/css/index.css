@@ -1,0 +1,85 @@
+*{
+    font-family: "Source Serif 4", Georgia, serif;
+}
+.font-num {
+    font-family: "Times New Roman", Times, serif;
+}
+.main-content {
+    min-height: 95vh;
+}
+.footer{
+    min-height: 5vh;
+}
+.company-name-text {
+font-size: 72px;
+line-height: 76px;
+text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.4);
+}
+.company-name{
+    padding-top: 160px;
+}
+/* Add this to your custom CSS */
+@keyframes badgeBackgroundCycle {
+    0% { background-color: #F48A37; } /* Color 1 */
+    25% { background-color: #1AADA1; } /* Color 2 */
+    50% { background-color: #F76D57; } /* Color 3 */
+    75% { background-color: #4D5B6B; } /* Color 4 */
+    100% { background-color: #F48A37; } /* Back to Color 1 */
+}
+
+.badge-color-cycle {
+    animation: badgeBackgroundCycle 32s linear infinite;
+}
+/* Add this to your custom CSS */
+/* .nav-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo{
+    font-size: 2em;
+    color: black;
+    pointer-events: none;
+}
+.navigation a {
+    text-decoration: none;
+    font-size: 1em;
+    color: black;
+    padding: 6px 15px;
+    border-radius: 20px;
+    margin: 0 10px;
+    font-weight: bold;
+    transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+.navigation a:hover,
+.navigation a.active {
+    background-color: black;
+    color: white;
+}
+#navbarLogo, .nav-item, #offcanvasNavbarLabel {
+    font-family: "Source Serif 4", Georgia, serif;
+} */
+
+
+.nav-item{
+    text-align: center;
+    
+}
+@media (max-width: 991.98px)
+{
+    .offcanvas-body{
+        background-color: #E2C799;
+    }
+}
+@media (min-width: 1399.98px)
+{
+    .nav-link{
+        color: #F2E8C6;
+    }
+}
