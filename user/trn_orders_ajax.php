@@ -3,36 +3,49 @@ require_once '../assets/connection.php';
 $xres = [];
 
 if (isset($_POST['event_action']) && $_POST['event_action'] == 'sendRatings') {
-    $xproduct_id = $_POST['product_id'];
-    $xproduct_rate = $_POST['product_rate'];
+
     $xtransac_num = $_POST['transac_num'];
 
-    $xqry1 = "SELECT * FROM user_delivery_tbl WHERE transactionNumber = ?";
-    $xstmt1 = $conn->prepare($xqry1);
-    $xstmt1->bind_param("s", $xtransac_num);
-    $xstmt1->execute();
-    $xrs = $xstmt1->get_result();
-    
-    if ($xrs->num_rows > 0) {
-        $xarr_product_id = [];
-        while ($xtransac_data = $xrs->fetch_assoc()) {
-            $xarr_product_id[] = $xtransac_data['productID'];
-        }
+    $xrate_val = [];
+    foreach ($_POST['ratings'] as $xrating) {
+        $xprod_id   = isset($xrating['product_id']) ? $xrating['product_id'] : '';
+        $xprod_rate = isset($xrating['product_rate']) ? $xrating['product_rate'] : '';
 
-        $xqry2 = "UPDATE product_tbl SET productRating = ? WHERE productID = ?";
-        $xstmt2 = $conn->prepare($xqry2);
-        foreach ($xarr_product_id as $productID) {
-            
-            $xstmt2->bind_param("ss", $xproduct_rate, $productID);
-        }
+        $xrate_val[] = [
+            'prod_id'   => $xprod_id,
+            'prod_rate' => $xprod_rate
+        ];
+    }
+
+    $xqry2 = "UPDATE product_tbl SET productRating = ? WHERE productID = ?";
+    $xstmt2 = $conn->prepare($xqry2);
+
+    if ($xstmt2 === false) {
         $xres['stat'] = 'error';
-        $xres['msg'] = 'error' . $xstmt2->error;
-        if ($xstmt2->execute()) {
-            $xres['stat'] = 'success';
-            $xres['msg'] = 'Product Rating Added Successfully';
+        $xres['msg'] = 'error' . $conn->error;
+    }
+
+    $xbool = true;
+    foreach ($xrate_val as $xrs_rate_val) {
+        $prod_id = $xrs_rate_val['prod_id'];
+        $prod_rate = $xrs_rate_val['prod_rate'];
+
+        $xstmt2->bind_param("ss", $prod_rate, $prod_id);
+
+        if (!$xstmt2->execute()) {
+            $xbool = false;
+            $xres['stat'] = 'error';
+            $xres['msg'] = 'error' . $xstmt2->error;
         }
     }
-    $xstmt1->close();
+
+    if ($xbool) {
+        $xres['stat'] = 'success';
+        $xres['msg'] = 'Product Rating Updated Successfully';
+    }
+
+    $xstmt2->close();
 }
+
 echo json_encode($xres);
 ?>

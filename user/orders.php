@@ -968,82 +968,7 @@
                                                         </div> 
                                                         <!-- END MODAL -->
                                                         <!-- Modal for rate -->
-                                                        <div class="modal fade" id="rateModal<?= $row['ID']; ?>" tabindex="-1" aria-labelledby="rateModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header text-light" style="background-color: #800000 !important;">
-                                                                        <h5 class="font-num modal-title" id="rateModal<?= $row['ID']; ?>Label">Order Information</h5>
-                                                                        <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body bg-body-tertiary">
-                                                                        <div class="container">
-                                                                            <div id="message"></div>
-                                                                            <form method="POST" id="formRatings">
-                                                                                <div class="input-group mt-1">
-                                                                                    <strong class="font-num input-group-text col-4">Transaction Number</strong>
-                                                                                    <input type="text" class="font-num form-control text-center" name="transactionNumber" value="<?= $row['transactionNumber']; ?>" readonly>
-                                                                                </div>
-                                                                                <div class="input-group mt-1">
-                                                                                    <strong class="font-num input-group-text col-4">User Email</strong>
-                                                                                    <input type="text" class="font-num form-control text-center" name="userEmailAddress" value="<?= $row['userEmailAddress']; ?>" readonly>
-                                                                                </div>
-                                                                                <!-- DISPLAY EACH ITEMS THAT HAS BEEN GROUPED HERE -->
-                                                                                <?php 
-                                                                                    $rowDate = $row['orderDate'];
-                                                                                    $rowTime = $row['orderTime'];
-                                                                                    $additionalSql = "SELECT * FROM user_delivery_tbl WHERE orderDate = '$rowDate' AND orderTime= '$rowTime' AND orderStatus = 'complete'";
-                                                                                    $additionalResult = mysqli_query($conn, $additionalSql);
-                                                                                    while ($additionalRow = mysqli_fetch_assoc($additionalResult))
-                                                                                    { 
-                                                                                        
-                                                                                        $additionalQuantity = $additionalRow['productQuantity'];
-                                                                                        $additionalPrice = $additionalRow['productPrice'];
-                                                                                        $additionalTotal = $additionalQuantity * $additionalPrice;
-                                                                                        $xproducti_id = $additionalRow['productID'];
-
-                                                                                        $xxqry = "SELECT * FROM product_tbl WHERE productID = '$xproducti_id'";
-                                                                                        $xstmt = mysqli_query($conn, $xxqry);
-                                                                                        $xres = mysqli_fetch_assoc($xstmt);
-
-                                                                                        // echo '<pre>';var_dump('pasok dito 1',$xres);
-                                                                                ?>
-                                                                                <div class="form-control mt-1">
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-4">
-                                                                                            <img class="rounded w-50" src="../admin/images/products/<?= $additionalRow['productImage']; ?>" alt="<?= $row['productName']; ?>" style="height: 100px;">
-                                                                                            <label class="font-num form-check-label">
-                                                                                                <span class="font_me fw-bold col-md-2"><?= $additionalRow['productName']; ?>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <div class="col-md-2">
-                                                                                            <label class="font-num pt-4 form-check-label font-num fw-semibold">
-                                                                                                <?= $additionalRow['productID']; ?>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <div class="col-md-6">
-                                                                                            <div class="rate d-flex justify-content-center" data-product-id="<?= $additionalRow['productID']; ?>">
-                                                                                                <span class="star" data-value="1" title="1 stars">★</span>
-                                                                                                <span class="star" data-value="2" title="2 stars">★</span>
-                                                                                                <span class="star" data-value="3" title="3 stars">★</span>
-                                                                                                <span class="star" data-value="4" title="4 stars">★</span>
-                                                                                                <span class="star" data-value="5" title="5 stars">★</span>
-                                                                                                <input class="selectedRating" name="rating[<?= $additionalRow['productID']; ?>]" value="<?php echo $xres['productRating'];?>" readonly>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <?php } ?>
-                                                                                <div class="input-group mt-1 d-flex justify-content-end">
-                                                                                    <!-- <button type="button" id="sendRatingsBtn" class="btn btn-success">Send Ratings</button> -->
-                                                                                     <input type="button"id="sendRatingsBtn" class="btn btn-success" value="Send Ratings" onclick="sendRate('<?php echo $row['transactionNumber']; ?>', '<?php echo $row['productID']; ?>')">
-                                                                                </div>
-                                                                                <!-- END OF DISPLAY -->
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <?php require 'modal.php'; ?>
                                                         <!-- END MODAL -->
 
                                                     </tr>
@@ -1296,47 +1221,47 @@
             });
 
             // Function to display dynamic values of ratings and product IDs
-            function displayRatingsAndProductIDs() {
-                console.clear(); // Clear the console for a fresh display
-                console.log("Displaying current ratings and product IDs:");
+            // function displayRatingsAndProductIDs() {
+            //     console.clear(); // Clear the console for a fresh display
+            //     console.log("Displaying current ratings and product IDs:");
 
-                const selectedRatings = document.querySelectorAll('.selectedRating');
+            //     const selectedRatings = document.querySelectorAll('.selectedRating');
                 
-                if (selectedRatings.length === 0) {
-                    console.log("No ratings found.");
-                    return;
-                }
+            //     if (selectedRatings.length === 0) {
+            //         console.log("No ratings found.");
+            //         return;
+            //     }
 
-                selectedRatings.forEach(input => {
-                    const productIdMatch = input.name.match(/rating\[(.*?)\]/);
-                    if (productIdMatch) {
-                        const productId = productIdMatch[1]; // Extract product ID as a string
-                        const rating = parseInt(input.value, 10) || 0; // Ensure the rating is an integer
-                        if (rating > 0) { // Only display ratings that are greater than 0
-                            console.log(`Product ID: ${productId}, Rating: ${rating}`);
-                        }
-                    } else {
-                        console.error("Product ID could not be extracted from input name:", input.name);
-                    }
-                });
+            //     selectedRatings.forEach(input => {
+            //         const productIdMatch = input.name.match(/rating\[(.*?)\]/);
+            //         if (productIdMatch) {
+            //             const productId = productIdMatch[1]; // Extract product ID as a string
+            //             const rating = parseInt(input.value, 10) || 0; // Ensure the rating is an integer
+            //             if (rating > 0) { // Only display ratings that are greater than 0
+            //                 console.log(`Product ID: ${productId}, Rating: ${rating}`);
+            //             }
+            //         } else {
+            //             console.error("Product ID could not be extracted from input name:", input.name);
+            //         }
+            //     });
 
-                if (selectedRatings.length > 0) {
-                    console.log("Ratings and product IDs displayed.");
-                }
-            }
+            //     if (selectedRatings.length > 0) {
+            //         console.log("Ratings and product IDs displayed.");
+            //     }
+            // }
 
             // Add click event listener to the 'sendRatingsBtn' button
-            const sendRatingsBtn = document.getElementById('sendRatingsBtn');
-            if (sendRatingsBtn) {
-                console.log("Send Ratings Button found, adding click event listener");
-                sendRatingsBtn.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevent default form submission if applicable
-                    console.log("Send Ratings Button clicked");
-                    displayRatingsAndProductIDs(); // Display the selected ratings and product IDs in the console
-                });
-            } else {
-                console.error("Send Ratings Button not found");
-            }
+            // const sendRatingsBtn = document.getElementById('sendRatingsBtn');
+            // if (sendRatingsBtn) {
+            //     console.log("Send Ratings Button found, adding click event listener");
+            //     sendRatingsBtn.addEventListener('click', function(event) {
+            //         event.preventDefault(); // Prevent default form submission if applicable
+            //         console.log("Send Ratings Button clicked");
+            //         displayRatingsAndProductIDs(); // Display the selected ratings and product IDs in the console
+            //     });
+            // } else {
+            //     console.error("Send Ratings Button not found");
+            // }
         });
 
     </script>
@@ -1450,33 +1375,49 @@
             $('#cancelledTable').DataTable(commonOptions);
         });
 
+function sendRate(xtran_num) {
+    console.log('transaction number : ', xtran_num);
+    const xratings = [];
+    const selectedRatings = document.querySelectorAll(`.selectedRating[data-transaction-number="${xtran_num}"]`);
 
-        function sendRate(xtran_num,xid) {
-            console.log('test',xtran_num,xid);
-            let xrate_val = $(`input[name="rating[${xid}]"]`).val();
-            let xparams ={
-                event_action: 'sendRatings',
-                product_id: xid,
-                product_rate: xrate_val,
-                transac_num: xtran_num
+    selectedRatings.forEach(selectedRating => {
+        const xstr_id       = selectedRating.id;
+        const xprod_id      = xstr_id.match(/\[([^\]]+)\]/)[1];
+        const ratingValue   = selectedRating.value;
+        const xrate_val     = selectedRating.value;
+        
+        xratings.push({
+            product_id: xprod_id,
+            product_rate: xrate_val
+        });
+
+        console.log(`${xprod_id}: ${xrate_val}`); // for debugging purposes
+    });
+
+    console.log('dito',xratings)
+
+    const xparams = {
+        event_action: 'sendRatings',
+        transac_num: xtran_num,
+        ratings: xratings
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "./trn_orders_ajax.php",
+        data: xparams,
+        dataType: "json",
+        success: function (xres) {
+            console.log('here',xres);
+            if (xres.stat === "success") {
+                alert(xres.msg);
+                window.location.reload();
+            } else {
+                alert(xres.msg);
             }
-            $.ajax({
-                type: "POST",
-                url: "./trn_orders_ajax.php",
-                data: xparams,
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    if (res.stat = "success"){
-                        alert(res.msg);
-                        window.location.reload();
-                    }else{
-                        alert(res.msg);
-                    }
-                    
-                }
-            });
         }
+    });
+}
 
     </script>
 
